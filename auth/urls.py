@@ -5,5 +5,5 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls', )),
-    path('', lambda request: redirect('/blog/')),
+    path('', lambda request: redirect('blog:post_list')),
 ]
