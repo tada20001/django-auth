@@ -15,7 +15,8 @@ from .forms import SignupForm
 #             user = form.save()
 #             #  로그인 처리
 #             auth_login(request, user)
-#             return redirect('profile')
+#             next_url = request.GET.get('next') or 'profile'
+#             return redirect(next_url)
 #     else:
 #         form = UserCreationForm()
 #     return render(request, 'accounts/signup.html', {'form': form, })
@@ -25,10 +26,14 @@ class SignupView(CreateView):
     form_class = UserCreationForm
     template_name = 'accounts/signup.html'
 
+    def get_success_url(self):
+        next_url = self.request.GET.get('next') or 'profile'
+        return resolve_url(next_url)
+
     def form_valid(self, form):
         user = form.save()
         auth_login(self.request, user)
-        return redirect('profile')
+        return redirect(self.get_success_url())
 
 signup = SignupView.as_view()
 
