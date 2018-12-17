@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db.models.signals import post_save
+from django.core.mail import send_mail
 from django.db import models
 
 
@@ -15,7 +16,17 @@ class Profile(models.Model):
 # 회원가입과 동시에 유저 객체를 만들어내기 때문에 유저 객체를 통해 프로파일 만들기
 def on_post_save_for_user(sender, **kwargs):
     if kwargs['created']:
+        # 1. 유저가입 시기
         user = kwargs['instance']
         Profile.objects.create(user=user)
+
+        # 2. 환영 이메일 보내기 : 동기적으로 작동
+        send_mail(
+            '환영합니다.',
+            '가입을 축하합니다.',
+            settings.EMAIL_HOST_USER,
+            [user.email],
+            fail_silently=False,
+            )
 
 post_save.connect(on_post_save_for_user, sender=settings.AUTH_USER_MODEL)
