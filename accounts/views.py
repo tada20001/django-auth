@@ -23,7 +23,7 @@ from .forms import SignupForm
 
 class SignupView(CreateView):
     model = User
-    form_class = UserCreationForm
+    form_class = SignupForm
     template_name = 'accounts/signup.html'
 
     def get_success_url(self):

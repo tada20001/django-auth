@@ -1,6 +1,7 @@
 {% extends "accounts/layout.html" %}
 {% block content %}
 <h2>{{ user }}'s profile</h2>
+<p>email: {{ user.email|default:"&dash;" }}</p> 
 <p>bio: {{ user.profile.bio|default:"empty" }}</p>
 
 {% endblock %}
