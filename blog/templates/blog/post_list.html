@@ -1,0 +1,14 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+  {% for post in post_list %}
+  <table>
+    <tbody>
+      <tr>
+        <td><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></td>
+        <td>{{ post.created_at}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  {% endfor %}
+{% endblock %}
