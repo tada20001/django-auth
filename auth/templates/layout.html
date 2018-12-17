@@ -5,12 +5,12 @@
     <title>Django-auth Blog</title>
   </head>
   <body>
-    <h1>Django-auth Blog</h1>
+    <h1><a href="{% url 'root' %}">Django-auth Blog</a></h1>
     {% if not user.is_authenticated %}
     회원가입
     <a href="{% url 'login' %}?next={{ request.path }}">로그인</a>
     {% else %}
-    {{ user }}
+    <a href="{% url 'profile' %}">{{ user }}'s Profile</a>
     로그아웃
     {% endif %}
     <hr>
