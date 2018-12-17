@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls', )),
     path('', lambda request: redirect('blog:post_list')),
+    path('accounts/', include('accounts.urls')),
 ]
