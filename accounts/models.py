@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.core.mail import send_mail
 from django.db import models
 
+from django.contrib.auth.models import UserManager as AuthUserManager
 # Proxy User Model exmaple
 # class User(AuthUser):
 #     class Meta:
@@ -16,12 +17,21 @@ from django.db import models
 #         return '{} {}'.format(self.last_name, self.first_name)
 
 # AbstractUser 상속을 통한 유저모델 커스텀
+
+class UserManager(AuthUserManager):
+    def create_superuser(self, username, email, password, **extra_fields):
+        extra_fields.setdefault('sex', 'm') # sex필드에 대한 디폴트값 지정
+        return super().create_superuser(username, email, password, **extra_fields)
+
+
 class User(AbstractUser):
     sex = models.CharField(
             max_length=1,
             choices=(
                     ('f', 'female'),
-                    ('m', 'male')))
+                    ('m', 'male')),
+            verbose_name='성별')
+    objects = UserManager()
 
 
 class Profile(models.Model):
