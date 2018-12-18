@@ -7,7 +7,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import PasswordResetView, PasswordChangeView
+from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetConfirmView, PasswordResetView
 from django.http import Http404
 from django.utils.http import urlsafe_base64_decode
 
@@ -81,4 +81,22 @@ class MyPasswordChangeView(PasswordChangeView):
 
     def form_valid(self, form):
         messages.info(self.request, '비밀번호 변경을 완료했습니다.')
+        return super().form_valid(form)
+
+class MyPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset_form.html'
+    success_url = reverse_lazy('login')
+    email_template_name = 'accounts/password_reset_email.html'
+
+    def form_valid(self, form):
+        messages.info(self.request, '비밀번호 변경을 위한 링크를 이메일로 보내드렸습니다. 이메일을 확인해 주세요.')
+        return super().form_valid(form)
+
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        messages.info(self.request, '비밀번호가 재설정되었습니다.')
         return super().form_valid(form)
