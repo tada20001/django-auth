@@ -1,8 +1,27 @@
 from django.conf import settings
+from django.contrib.auth.models import User as AuthUser
+from django.contrib.auth.models import AbstractUser
+
 from django.db.models.signals import post_save
 from django.core.mail import send_mail
 from django.db import models
 
+# Proxy User Model exmaple
+# class User(AuthUser):
+#     class Meta:
+#         proxy = True
+#
+#     @property
+#     def name(self):
+#         return '{} {}'.format(self.last_name, self.first_name)
+
+# AbstractUser 상속을 통한 유저모델 커스텀
+class User(AbstractUser):
+    sex = models.CharField(
+            max_length=1,
+            choices=(
+                    ('f', 'female'),
+                    ('m', 'male')))
 
 
 class Profile(models.Model):
