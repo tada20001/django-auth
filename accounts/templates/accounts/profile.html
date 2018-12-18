@@ -1,7 +1,10 @@
 {% extends "accounts/layout.html" %}
 {% block content %}
 <h2>{{ user }}'s profile</h2>
-<p>email: {{ user.email|default:"&dash;" }}</p> 
+<p>email: {{ user.email|default:"&dash;" }}</p>
 <p>bio: {{ user.profile.bio|default:"empty" }}</p>
+
+<hr>
+<a href="{% url 'password_change' %}">비밀번호 변경하기</a>
 
 {% endblock %}

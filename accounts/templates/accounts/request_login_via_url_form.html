@@ -1,17 +1,11 @@
 {% extends "accounts/layout.html" %}
-
-{% block content %}
-    <h2>로그인</h2>
-
-    <form action="" method="post">
+ {% block content %}
+    <h2>이메일로 로그인</h2>
+     <form action="" method="post">
         {% csrf_token %}
         <table>
             {{ form.as_table }}
         </table>
         <input type="submit" />
     </form>
-
-    <hr/>
-
-    <a href="{% url "request_login_via_url" %}">이메일로 로그인하기</a>
 {% endblock %}
