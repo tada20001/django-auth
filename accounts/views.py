@@ -16,8 +16,7 @@ from django.shortcuts import render, redirect, resolve_url
 from django.urls import reverse_lazy
 from .forms import SignupForm
 
-User = get_user_model()
-
+from django.contrib.auth.models import User
 
 # FBV Example
 # def signup(request):
