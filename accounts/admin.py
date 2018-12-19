@@ -3,7 +3,7 @@ from django.utils import timezone
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
-from .models import Profile, User
+from .models import Profile, User, UserSession
 
 from django.contrib.auth.models import Permission
 
@@ -57,3 +57,5 @@ class UserAdmin(AuthUserAdmin):
         for user in queryset:
             pass
         self.message_user(request, 'Success!')
+
+admin.site.register(UserSession)

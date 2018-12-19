@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'accounts.middleware.KickedMiddleware', # 중복로그인 메세지 프레임워크 만들기(이 프레임워크는 반드시 MessageMiddleware 다음에 지정해야 함. 왜냐하면 메시지 프레임워크를 사용하기 위해)
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

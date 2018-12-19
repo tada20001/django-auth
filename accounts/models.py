@@ -78,7 +78,10 @@ def kick_my_other_sessions(sender, request, user, **kwargs):
     for user_session in UserSession.objects.filter(user=user):
         session_key = user_session.session_key
         session = SessionStore(session_key) # 세션키로 해당 세션들을 가져오기
-        session.delete()
+        #session.delete()
+        session['kicked'] = True
+        session.save() # 원래 session middleware에서 save()처리를 하나, 지금은 middleware를 쓰지 않기 때문에 직접 save() 함수 호출
+        user_session.delete() # 유저 세션 기록 제거
 
     # 2. 유저 세션을 새롭게 기록
     session_key = request.session.session_key
