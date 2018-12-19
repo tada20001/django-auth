@@ -5,6 +5,9 @@ from django import forms
 
 
 class SignupForm(UserCreationForm):
+    sex = forms.ChoiceField(required=True, choices=(
+            ('f', 'female'),
+            ('m', 'male')))
     bio = forms.CharField(required=False)
     website_url = forms.URLField(required=False)
 
@@ -23,16 +26,19 @@ class SignupForm(UserCreationForm):
         self.fields['username'].validators = [validate_email]
         self.fields['username'].help_text = 'Enter Email Format.'
         self.fields['username'].label = 'Email'
+        self.fields['sex'].label = '성별'
 
     def save(self):
         user = super().save(commit=False)
         user.email = user.username
+        user.sex = self.cleaned_data.get('sex')
         user.save()
 
         bio = self.cleaned_data.get('bio')
         website_url = self.cleaned_data.get('website_url')
 
         Profile.objects.create(user=user, bio=bio, website_url=website_url) # 회원가입 내용 프로필에 반영
+
         return user
 
     class Meta(UserCreationForm.Meta):
