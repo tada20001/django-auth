@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import validate_email
-from .models import User
+from .models import User, Profile
+from django import forms
+
 
 class SignupForm(UserCreationForm):
 
@@ -29,3 +31,10 @@ class SignupForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
+
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio', 'website_url']

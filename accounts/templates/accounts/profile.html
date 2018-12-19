@@ -5,6 +5,7 @@
 <p>bio: {{ user.profile.bio|default:"empty" }}</p>
 
 <hr>
+<a href="{% url 'profile_edit' %}">프로필 수정</a>
 <a href="{% url 'password_change' %}">비밀번호 변경하기</a>
 
 {% endblock %}
