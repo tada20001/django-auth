@@ -1,0 +1,9 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.content|linebreaks }}</p>
+  <p><small>게시일 : {{ post.created_at }}</small></p>
+
+  <p></p>
+  <a href="{% url 'blog:post_list' %}">Post List</a>
+{% endblock %}

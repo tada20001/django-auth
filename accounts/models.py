@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.models import User as AuthUser
+#from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.models import AbstractUser
 
 from django.db.models.signals import post_save
@@ -22,7 +22,6 @@ class UserManager(AuthUserManager):
     def create_superuser(self, username, email, password, **extra_fields):
         extra_fields.setdefault('sex', 'm') # sex필드에 대한 디폴트값 지정
         return super().create_superuser(username, email, password, **extra_fields)
-
 
 class User(AbstractUser):
     sex = models.CharField(

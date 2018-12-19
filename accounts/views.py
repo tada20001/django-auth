@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.models import User
 
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetConfirmView, PasswordResetView
@@ -12,10 +11,13 @@ from django.http import Http404
 from django.utils.http import urlsafe_base64_decode
 
 from django.views.generic import CreateView
-from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, resolve_url
 from django.urls import reverse_lazy
 from .forms import SignupForm
+
+User = get_user_model()
+
 
 # FBV Example
 # def signup(request):
