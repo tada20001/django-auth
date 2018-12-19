@@ -1,12 +1,15 @@
+from importlib import import_module
 from django.conf import settings
 #from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.models import AbstractUser
 
 from django.db.models.signals import post_save
+from django.contrib.auth.signals import user_logged_in
 from django.core.mail import send_mail
 from django.db import models
 
 from django.contrib.auth.models import UserManager as AuthUserManager
+
 # Proxy User Model exmaple
 # class User(AuthUser):
 #     class Meta:
@@ -58,3 +61,29 @@ def on_post_save_for_user(sender, **kwargs):
             )
 
 post_save.connect(on_post_save_for_user, sender=settings.AUTH_USER_MODEL)
+
+
+# 유저가 로그인할 때 session_key 저장
+class UserSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
+    session_key = models.CharField(max_length=40, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+# Session backends : db/cache ...
+SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+
+def kick_my_other_sessions(sender, request, user, **kwargs):
+    print('Kicked my other sessions!')
+    # 1. 기록 전에 유저의 다른 세션들을 제거(강제 로그아웃)하고
+    for user_session in UserSession.objects.filter(user=user):
+        session_key = user_session.session_key
+        session = SessionStore(session_key) # 세션키로 해당 세션들을 가져오기
+        session.delete()
+
+    # 2. 유저 세션을 새롭게 기록
+    session_key = request.session.session_key
+    UserSession.objects.create(user=user, session_key=session_key)
+
+# 유저로그인 시그널이 발생하면 해당 functions을 연결
+# dispatch_uid 지정은 함수 호출을 여러번 할 수 있음, dispatch_uid를 지정하면 하나의 키로 등록해주기 때문에 중복 등록할 염려가 없음
+user_logged_in.connect(kick_my_other_sessions, dispatch_uid='user_logged_in')
