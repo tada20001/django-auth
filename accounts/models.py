@@ -1,4 +1,3 @@
-from importlib import import_module
 from django.conf import settings
 #from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.models import AbstractUser
@@ -69,23 +68,12 @@ class UserSession(models.Model):
     session_key = models.CharField(max_length=40, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-# Session backends : db/cache ...
-SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+
 
 def kick_my_other_sessions(sender, request, user, **kwargs):
     print('Kicked my other sessions!')
-    # 1. 기록 전에 유저의 다른 세션들을 제거(강제 로그아웃)하고
-    for user_session in UserSession.objects.filter(user=user):
-        session_key = user_session.session_key
-        session = SessionStore(session_key) # 세션키로 해당 세션들을 가져오기
-        #session.delete()
-        session['kicked'] = True
-        session.save() # 원래 session middleware에서 save()처리를 하나, 지금은 middleware를 쓰지 않기 때문에 직접 save() 함수 호출
-        user_session.delete() # 유저 세션 기록 제거
+    user.is_user_logined_in = True # flag
 
-    # 2. 유저 세션을 새롭게 기록
-    session_key = request.session.session_key
-    UserSession.objects.create(user=user, session_key=session_key)
 
 # 유저로그인 시그널이 발생하면 해당 functions을 연결
 # dispatch_uid 지정은 함수 호출을 여러번 할 수 있음, dispatch_uid를 지정하면 하나의 키로 등록해주기 때문에 중복 등록할 염려가 없음
