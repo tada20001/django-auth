@@ -3,6 +3,7 @@
 <h2>{{ user }}'s profile</h2>
 <p>email: {{ user.email|default:"&dash;" }}</p>
 <p>bio: {{ user.profile.bio|default:"empty" }}</p>
+<p>website_url: {{ user.profile.website_url|default:"&dash;" }}</p>
 
 <hr>
 <a href="{% url 'profile_edit' %}">프로필 수정</a>

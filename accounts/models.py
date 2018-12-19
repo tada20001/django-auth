@@ -49,7 +49,7 @@ def on_post_save_for_user(sender, **kwargs):
     if kwargs['created']:
         # 1. 유저가입 시기
         user = kwargs['instance']
-        Profile.objects.create(user=user)
+        #Profile.objects.create(user=user)
 
         # 2. 환영 이메일 보내기 : 동기적으로 작동
         send_mail(
